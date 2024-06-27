@@ -6,23 +6,14 @@ var settings = {
 };
 
 $.ajax(settings).done(function (response) {
+    console.log("response出力");
+    console.log(response);
     const jsonData = response.juiceList; // JSONデータの中のjuiceList配列を取得
     const rows = 3;
     const cols = 10;
 
     // テーブル要素を作成
     const $table = $('<table>').attr('border', 1);
-
-    // テーブルのヘッダー行を作成
-    const $header = $('<thead>');
-    const $headerRow = $('<tr>');
-    const headers = ["columnNumber", "juiceName", "juiceImage", "price", "temperatureDisplay", "stock"];
-    headers.forEach(key => {
-        const $th = $('<th>').text(key);
-        $headerRow.append($th);
-    });
-    $header.append($headerRow);
-    $table.append($header);
 
     // テーブルのボディを作成
     const $tbody = $('<tbody>');
@@ -34,12 +25,10 @@ $.ajax(settings).done(function (response) {
             if (dataIndex < jsonData.length) {
                 const juice = jsonData[dataIndex];
                 const juiceText = `
-                    Column Number: ${juice.columnNumber} <br>
-                    Juice Name: ${juice.juiceName} <br>
                     <img src="data:image/jpeg;base64,${juice.juiceImage}" alt="${juice.juiceName}" width="50"><br>
-                    Price: ${juice.price} <br>
-                    Temperature: ${juice.temperatureDisplay} <br>
-                    Stock: ${juice.stock}
+                    ${juice.juiceName} <br>
+                    ${juice.price}円 <br>
+                    ${juice.temperatureDisplay}
                 `;
                 $td.html(juiceText);
             }
