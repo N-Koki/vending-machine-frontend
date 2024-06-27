@@ -6,46 +6,51 @@ var settings = {
 };
 
 $.ajax(settings).done(function (response) {
-    // 取得jsonデータ
-    var data_stringify = JSON.stringify(response);
-    var data_json = JSON.parse(data_stringify);
+    const jsonData = response.juiceList; // JSONデータの中のjuiceList配列を取得
+    const rows = 3;
+    const cols = 10;
 
-    <!-- レスポンスをHTMLとしてdiv#resultに設定-->
-    $("#result").html(JSON.stringify(response));
+    // テーブル要素を作成
+    const $table = $('<table>').attr('border', 1);
+
+    // テーブルのヘッダー行を作成
+    const $header = $('<thead>');
+    const $headerRow = $('<tr>');
+    const headers = ["columnNumber", "juiceName", "juiceImage", "price", "temperatureDisplay", "stock"];
+    headers.forEach(key => {
+        const $th = $('<th>').text(key);
+        $headerRow.append($th);
+    });
+    $header.append($headerRow);
+    $table.append($header);
+
+    // テーブルのボディを作成
+    const $tbody = $('<tbody>');
+    for (let i = 0; i < rows; i++) {
+        const $tr = $('<tr>');
+        for (let j = 0; j < cols; j++) {
+            const $td = $('<td>');
+            const dataIndex = i * cols + j;
+            if (dataIndex < jsonData.length) {
+                const juice = jsonData[dataIndex];
+                const juiceText = `
+                    Column Number: ${juice.columnNumber} <br>
+                    Juice Name: ${juice.juiceName} <br>
+                    <img src="data:image/jpeg;base64,${juice.juiceImage}" alt="${juice.juiceName}" width="50"><br>
+                    Price: ${juice.price} <br>
+                    Temperature: ${juice.temperatureDisplay} <br>
+                    Stock: ${juice.stock}
+                `;
+                $td.html(juiceText);
+            }
+            $tr.append($td);
+        }
+        $tbody.append($tr);
+    }
+    $table.append($tbody);
+
+    // テーブルをHTMLに追加
+    $('#vending-machine').append($table);
 
 });
-//    // テーブルの行数と列数を設定
-//    const rows = 3;
-//    const cols = 10;
-//
-//    // テーブル要素を作成
-//    const $table = $('<table>').attr('border', 1);
-//
-//    // テーブルのヘッダー行を作成
-//    const $header = $('<thead>');
-//    const $headerRow = $('<th>').text(key);
-//    Object.keys(jsonData[0]).forEach(key => {
-//        const $th = $('<th>').text(key);
-//        $headerRow.append($th);
-//    });
-//    $header.append($headerRow);
-//    $table.append($header);
-//
-//    // デーブルのボディを作成
-//    const $tbody = $('<tbody>');
-//    for (let i = 0; i < rows; i++) {
-//        const $tr = $('<tr>');
-//        for (let j = 0; j < cols; j++) {
-//            const $td = $('<td>');
-//            const dataIndex = i * cols + j;
-//            if (dataIndex < jsonData.length) {
-//                $td.text(JSON.stringify(jsonData[dataIndex]));
-//            }
-//            $tr.append($td);
-//        }
-//        $tbody.append($tr);
-//    }
-//    $table.append($tbody);
-//
-//    // テーブルをHTMLに追加
-//    $('#vending-machine').append($table);
+
