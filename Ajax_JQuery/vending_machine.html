@@ -1,27 +1,13 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
 
-<body>
-<!-- Webページで表示される内容を定義-->
-<div id="result"></div>
-<script>
-<!-- API呼び出しの実装コードをコピペ-->
-var settings = {
-   "url": "http://localhost:8080/getJuiceList",
-   "method": "GET",
-   "timeout": 0,
-};
-
-$.ajax(settings).done(function (response) {
-
-<!-- レスポンスをHTMLとしてdiv#resultに設定-->
-$("#result").html(JSON.stringify(response));
-
-});
-</script>
-
-</body>
+    <body>
+    <!-- Webページで表示される内容を定義-->
+        <div id="vending-machine"></div>
+        <div id="result"></div>
+        <script src="script.js"></script>
+    </body>
 </html>
